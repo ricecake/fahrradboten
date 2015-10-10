@@ -79,8 +79,7 @@ handle_call({clock_in, Messenger}, _From, State = #state{messengers = M,
         {Messenger, _Pid} = Tup ->
             {reply, ok, State#state{free_messengers = [Tup|FM]}};
         false ->
-            {ok, Pid} = dispatch_messenger:start(Messenger),
-            _ = erlang:monitor(process, Pid),
+	    {ok, Pid} = messenger_sup:new_worker(Messenger),
             Tup = {Messenger, Pid},
             {reply, ok, State#state{messengers = [Tup|M],
                                     free_messengers = [Tup|FM]}}

@@ -3,7 +3,7 @@
 -behaviour(gen_fsm).
 
 %% API
--export([start/1]).
+-export([start_link/1]).
 
 %% gen_fsm callbacks
 -export([init/1, location/1,
@@ -23,8 +23,8 @@
 %%% API
 %%%===================================================================
 
-start(MessengerID) ->
-    gen_fsm:start(?MODULE, [MessengerID], []).
+start_link(MessengerID) ->
+    gen_fsm:start_link(?MODULE, [MessengerID], []).
 
 location(Pid) ->
     gen_fsm:sync_send_event(Pid, location, timer:seconds(5)).
